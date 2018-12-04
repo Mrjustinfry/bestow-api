@@ -20,49 +20,62 @@ const today = () => {
     return today;
 }
 
-const bestowSchema = mongoose.Schema({
-    user: [{
-       firstName: {type: String, required: true},
-       lastName: {type: String, required: true},
-       username: {type: String, required: true, unique: true},
-       password: {type: String, required: true}
-     }],
-     items: [{
-       who: {type: String, required: true},
-       what: {type: String, required: true},
-       when: {type: Date, default: today, required: true},
-       how: {type: String, required: true}
-     }]
+const itemSchema = mongoose.Schema({
+      user: { type: mongoose.Schema.Types.ObjectId, ref: 'users' },
+      hide: {type: Boolean, default: true},
+      who: {type: String, required: true},
+      what: {type: String, required: true},
+      when: {type: Date, default: today, required: true},
+      how: {type: String, required: true}
+});
+
+const userSchema = mongoose.Schema({
+      firstName: {type: String, required: true},
+      lastName: {type: String, required: true},
+      username: {type: String, required: true, unique: true},
+      password: {type: String, required: true}
 })
 
+itemSchema.pre('find', function (next) {
+    this.populate('user');
+    next();
+});
 
-bestowSchema.methods.serialize = function () {
-    return {
-      user: [{
-        id: this._id,
-        firstName: this.firstName,
-        lastName: this.lastName,
-        username: this.username,
-        password: this.password
-      }],
-      items: [{
-        id: this._id,
+itemSchema.pre('findById', function (next) {
+    this.populate('user');
+    next();
+});
+
+itemSchema.methods.serialize = function() {
+  return {
+        user: this.userId,
+        cardId: this._id,
+        hide: this.hide,
         who: this.who,
         what: this.what,
         when: this.when,
         how: this.how
-      }]
-    };
-};
+  }
+}
 
-bestowSchema.methods.validatePassword = function (password) {
+userSchema.methods.serialize = function() {
+  return {
+        userId: this._id,
+        firstName: this.firstName,
+        lastName: this.lastName,
+        username: this.username
+  }
+}
+
+userSchema.methods.validatePassword = function (password) {
     return bcrypt.compare(password, this.password);
 };
 
-bestowSchema.statics.hashPassword = function (password) {
+userSchema.statics.hashPassword = function (password) {
     return bcrypt.hash(password, 10);
 };
 
-const Bestow = mongoose.model('bestow', bestowSchema)
+const Items = mongoose.model('items', itemSchema)
+const Users = mongoose.model('users', userSchema)
 
-module.exports = { Bestow };
+module.exports = { Items, Users };
