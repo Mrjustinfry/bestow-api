@@ -103,9 +103,9 @@ router.put('/:id', (req, res) => {
 })
 
 router.delete('/:id', (req, res) => {
-  Items.findByIdAndRemove(req.params.cardId)
+  Items.findByIdAndRemove(req.params.id)
     .then(() => {
-        console.log(`Deleted item ${req.params.cardId}`);
+        console.log(`Deleted item ${req.params.id}`);
         res.status(204).end();
     });
 })
