@@ -23,7 +23,6 @@ app.use(
     })
 );
 
-app.use(express.static('public'));
 app.use(morgan('common'));
 app.use(express.json());
 app.use(function (req, res, next) {
