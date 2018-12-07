@@ -163,18 +163,18 @@ describe('PUT request for Items', function () {
         })
 })
 
-describe('DELETE requests for Items', function () {
+describe.only('DELETE requests for Items', function () {
       it('Should delete an item by id', function () {
             let item;
             return Items
                 .findOne()
                 .then(_item => {
                     item = _item;
-                    return chai.request(app).delete(`/api/items/${item.cardId}`);
+                    return chai.request(app).delete(`/api/items/${item.id}`);
                 })
                 .then(res => {
                     res.should.have.status(204);
-                    return Items.findById(item.cardId);
+                    return Items.findById(item.id);
                 })
                 .then(_item => {
                     should.not.exist(_item);
