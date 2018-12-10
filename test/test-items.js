@@ -163,7 +163,7 @@ describe('PUT request for Items', function () {
         })
 })
 
-describe.only('DELETE requests for Items', function () {
+describe('DELETE requests for Items', function () {
       it('Should delete an item by id', function () {
             let item;
             return Items

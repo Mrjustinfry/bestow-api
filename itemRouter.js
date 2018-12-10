@@ -82,7 +82,7 @@ router.post('/', (req, res) => {
 
 //put request for items
 router.put('/:id', (req, res) => {
-    if (!(req.params.id && req.body.cardId && req.params.id === req.body.cardId)) {
+    if (!(req.params.id === req.body.cardId)) {
       res.status(400).json({
           error: `ID's do not match`
     });
