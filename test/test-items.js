@@ -146,7 +146,7 @@ describe('PUT request for Items', function () {
             }
             return Items.findOne()
                 .then(item => {
-                    updatedItem.cardId = item._id;
+                    updatedItem.cardId = item.id;
                     return chai.request(app)
                         .put(`/api/items/${updatedItem.cardId}`)
                         .send(updatedItem)
