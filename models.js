@@ -53,7 +53,7 @@ itemSchema.methods.serialize = function() {
         hide: this.hide,
         who: this.who,
         what: this.what,
-        when: this.when.replace('T00:00:00.000Z', ''),
+        when: this.when,
         how: this.how
   }
 }
