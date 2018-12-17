@@ -6,13 +6,26 @@ const uuid = require('uuid');
 
 mongoose.Promise = global.Promise;
 
+const today = () => {
+    let today = new Date();
+    let month = today.getMonth() + 1;
+    let day = today.getDate();
+    let year = today.getFullYear();
+    if (day < 10) {
+        day = '0' + day
+    } if (month < 10) {
+        month = '0' + month
+    }
+    today = year + month + day;
+    return today;
+}
 
 const itemSchema = mongoose.Schema({
       user: { type: mongoose.Schema.Types.ObjectId, ref: 'users' },
       hide: {type: Boolean, default: true},
       who: {type: String, required: true},
       what: {type: String, required: true},
-      when: {type: Date, required: true},
+      when: {type: Date, default: today, required: true},
       how: {type: String, required: true}
 });
 
